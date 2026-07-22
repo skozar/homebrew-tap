@@ -2,14 +2,13 @@ class KeepaliveUi < Formula
   desc "Menu bar controller for the keepalive activity agent"
   homepage "https://github.com/skozar/keepalive"
   version "0.4.0"
-  url "https://github.com/skozar/keepalive/releases/download/keepalive-ui-v0.4.0/Keepalive-0.4.0.zip"
-  sha256 "fc0524809151b6cca6300b5f02eb897744d2b0d658945f42f5c88ed558364412"
+  url "https://github.com/skozar/keepalive/releases/download/keepalive-ui-v0.4.0/KeepaliveUI-0.4.0.zip"
+  sha256 "907a13803e66bbb4e447e9109fc060f0fc903fb65c2efaf0ea56617c4f85984b"
   license "MIT"
 
   depends_on "keepalive"
 
   def install
-    # Zip unpacks Keepalive.app/ — we're already inside it.
     (prefix/"Keepalive.app").install Dir["*"]
   end
 
