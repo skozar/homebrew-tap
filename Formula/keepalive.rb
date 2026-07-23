@@ -8,11 +8,14 @@ class Keepalive < Formula
   depends_on "keepalive-cli"
 
   def install
-    system "cp", "-R", "Keepalive.app", prefix.to_s
+    (prefix/"Keepalive.app").install Dir["*"]
   end
 
   def post_install
-    system "ln", "-sf", "#{prefix}/Keepalive.app", "/Applications/Keepalive.app"
+    app_source = prefix/"Keepalive.app"
+    app_target = Pathname("/Applications/Keepalive.app")
+    app_target.delete if app_target.exist? || app_target.symlink?
+    app_target.make_symlink(app_source)
   end
 
   def caveats
