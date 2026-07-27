@@ -2,22 +2,16 @@ class KeepaliveCli < Formula
   desc "Keep macOS awake for Teams during chosen hours"
   homepage "https://github.com/skozar/keepalive"
   version "0.11.4"
-  url "file:///Users/skozar/Projects/pets/keepalive/dist/keepalive-test.tar.gz"
-  sha256 "b415dd1b6ed9016f0709b13d24af01bf5605f7376cc860f5a7630d8fc4f9f1fb"
+  url "file:///Users/skozar/Projects/pets/keepalive/dist/keepalive-flat.tar.gz"
+  sha256 "80ace24d7112559a93f198fbf04de884583893e978417239b4a17d0052d26531"
 
   def install
-    # Debug: list what's in the staging directory
-    ohai "Staging directory contents: #{Dir['*'].inspect}"
-    libexec.install Dir["*"]
-    ohai "Libexec contents: #{(libexec.children).inspect}"
+    # Create .app bundle from flat tarball contents
+    app = libexec/"keepalive-cli.app"
+    app.mkpath
+    # Move extracted Contents/ into the .app
+    FileUtils.mv(Dir["*"].map { |f| Pathname(f) }, app)
     
-    # Rename to .app bundle
-    src = libexec/"keepalive-app-bundle"
-    dst = libexec/"keepalive-cli.app"
-    ohai "Renaming #{src} to #{dst}"
-    ohai "Source exists: #{src.exist?}"
-    FileUtils.mv(src, dst) if src.exist?
-    
-    bin.install_symlink libexec/"keepalive-cli.app/Contents/MacOS/keepalive-cli" => "keepalive-cli"
+    bin.install_symlink app/"Contents/MacOS/keepalive-cli" => "keepalive-cli"
   end
 end
