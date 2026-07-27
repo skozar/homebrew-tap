@@ -1,28 +1,13 @@
 class KeepaliveCli < Formula
   desc "Keep macOS awake for Teams during chosen hours"
   homepage "https://github.com/skozar/keepalive"
-  version "0.11.3"
-  url "https://github.com/skozar/keepalive/releases/download/v#{version}/keepalive-cli-#{version}.tar.gz"
-  sha256 "302a46e47ba57f8ef7d652c2113b74488d1e250149e29b0eaec56963b4b7d44d"
+  version "0.11.4"
+  url "file:///Users/skozar/Projects/pets/keepalive/dist/keepalive-test.tar.gz"
+  sha256 "b415dd1b6ed9016f0709b13d24af01bf5605f7376cc860f5a7630d8fc4f9f1fb"
 
   def install
-    libexec.install "keepalive-cli.app"
+    libexec.install Dir["*"]
+    FileUtils.mv(libexec/"keepalive-app-bundle", libexec/"keepalive-cli.app")
     bin.install_symlink libexec/"keepalive-cli.app/Contents/MacOS/keepalive-cli" => "keepalive-cli"
-  end
-
-  def caveats
-    <<~EOS
-      To start the agent:
-        keepalive-cli start
-
-      To run with custom schedule:
-        keepalive-cli start --schedule 08:00-17:00 --idle 180
-
-      Logs: ~/Library/Logs/keepalive/keepalive.log
-
-      IMPORTANT: Grant Accessibility permission to keepalive-cli:
-        System Settings → Privacy & Security → Accessibility
-        Add: #{opt_bin}/keepalive-cli
-    EOS
   end
 end
