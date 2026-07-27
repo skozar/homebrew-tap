@@ -6,27 +6,12 @@ class KeepaliveCli < Formula
   sha256 "4f6be1d10fc632671f9dab091cc4075bda753db4c192fca167dee04e966f2b45"
 
   def install
-    ohai "CWD: #{Dir.pwd}"
-    ohai "Dir entries: #{Dir['*'].inspect}"
-    
+    # Homebrew unpacks the tarball and CDs into the top-level directory.
+    # Our tarball contains Contents/ at the top level, so CWD = Contents/.
+    # Install everything into .app/Contents/
     app = libexec/"keepalive-cli.app"
     (app/"Contents").mkpath
-    
-    # Find the Contents directory (could be at root of staging)
-    contents_dir = Dir.children(".").find { |f| f == "Contents" }
-    ohai "Contents dir found: #{contents_dir}"
-    
-    if contents_dir
-      FileUtils.mv(Pathname.new(contents_dir).children, app/"Contents")
-    else
-      # Fallback: install everything and find Contents
-      libexec.install Dir["*"]
-      ohai "Libexec contents: #{libexec.children.inspect}"
-      src = libexec/"Contents"
-      if src.exist?
-        FileUtils.mv(src.children, app/"Contents")
-      end
-    end
+    FileUtils.mv(Dir["*"], app/"Contents", verbose: true)
     
     system "codesign", "--force", "--deep", "--sign", "-", app.to_s
     bin.install_symlink app/"Contents/MacOS/keepalive-cli" => "keepalive-cli"
