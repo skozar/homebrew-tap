@@ -3,7 +3,7 @@ class KeepaliveCli < Formula
   homepage "https://github.com/skozar/keepalive"
   version "0.11.9"
   url "https://github.com/skozar/keepalive/releases/download/v#{version}/keepalive-cli-#{version}.tar.gz"
-  sha256 "b48b3d6984ddd531dd8810bf70c76235706b3e31852603646a5333c322e50e16"
+  sha256 "a408113124c8fb3fa8b6aeec7719a09285c865d5a099a663e77a24e4fbbf5810"
 
   def install
     # Tarball contains Contents/ from a PyInstaller --windowed .app bundle.
