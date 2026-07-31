@@ -13,10 +13,8 @@ class KeepaliveCli < Formula
     (app/"Contents").mkpath
     FileUtils.mv(Dir["Contents/*"], app/"Contents")
 
-    # Ad-hoc sign initially (proper signing happens via `keepalive-cli setup`)
-    system "codesign", "--force", "--deep", "--sign", "-", app.to_s
-
     # CLI symlink through .app
+    # Note: codesign is done by `keepalive-cli setup` (runs outside Homebrew sandbox)
     bin.install_symlink app/"Contents/MacOS/keepalive-cli" => "keepalive-cli"
   end
 
