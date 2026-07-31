@@ -11,7 +11,9 @@ class KeepaliveCli < Formula
     # so macOS identifies the process as "keepalive-cli" in Accessibility.
     app = libexec/"keepalive-cli.app"
     (app/"Contents").mkpath
-    FileUtils.mv(Dir["Contents/*"], app/"Contents")
+    # Homebrew unpacks Contents/ into staging. Move children into .app.
+    contents_children = Pathname.new("Contents").children
+    FileUtils.mv(contents_children, app/"Contents")
 
     # CLI symlink through .app
     # Note: codesign is done by `keepalive-cli setup` (runs outside Homebrew sandbox)
